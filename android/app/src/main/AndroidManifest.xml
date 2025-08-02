@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <!-- This namespace is essential for using Android build tools attributes like `tools:targetApi` -->
+
+    <!-- =================================================================== -->
+    <!-- REQUIRED PERMISSIONS FOR APPLICATION FUNCTIONALITY -->
+    <!-- These permissions grant the app access to specific device capabilities. -->
+    <!-- =================================================================== -->
+
+    <!-- Microphone Access: Required for real-time guitar tuning and chord detection from audio input. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Internet Access: Required for sending audio files to the backend API for chord analysis. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Storage Access (Legacy):
+    These permissions are for reading/writing to external storage on Android versions up to API 29 (Android 10).
+    For Android 10+, scoped storage is enforced, and for Android 13+ specific media permissions are used. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
+    <!-- Media Access (Modern):
+    Required for reading audio files from the device's media collection on Android 13 (API 33) and above. -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+
+    <!-- Foreground Service:
+    Needed if the app performs background operations (like continuous audio recording)
+    while minimized, to ensure the process is not killed by the system. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- Notifications:
+    Required on Android 13 (API 33) and above to display notifications,
+    especially important for foreground services to inform the user of ongoing background activity. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Bluetooth (Legacy):
+    These permissions are for basic Bluetooth operations on Android versions up to API 30 (Android 11).
+    For newer versions, more granular BLUETOOTH_SCAN, BLUETOOTH_ADVERTISE, BLUETOOTH_CONNECT are used. -->
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+
+    <!-- Bluetooth (Modern - Android 12+ / API 31+):
+    These granular permissions are required for Bluetooth Low Energy (BLE) operations. -->
+    <!-- For discovering BLE devices -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <!-- For making the device discoverable (if applicable) -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <!-- For connecting to BLE devices -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!-- Location Access:
+    Required for BLE scanning on Android 6.0 (API 23) and above, as BLE scan results
+    can potentially be used to infer location. -->
+    <!-- Precise location -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Approximate location (legacy, max SDK 30) -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" android:maxSdkVersion="30" />
+
+    <!-- =================================================================== -->
+    <!-- HARDWARE FEATURE REQUIREMENTS -->
+    <!-- These tags declare hardware features the app requires or prefers. -->
+    <!-- =================================================================== -->
+
+    <!-- Bluetooth Low Energy (BLE) Requirement:
+    Declares that the app specifically uses Bluetooth Low Energy.
+    `android:required="true"` means the app will only be available on devices
+    that support BLE. Set to `false` if BLE is optional. -->
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
+
+    <!-- Microphone Hardware Requirement:
+    Declares that the app requires a microphone.
+    `android:required="true"` means the app will only be available on devices
+    that have a microphone. -->
+    <uses-feature android:name="android.hardware.microphone" android:required="true" />
+
+    <!-- =================================================================== -->
+    <!-- APPLICATION AND ACTIVITY CONFIGURATION -->
+    <!-- These settings configure the main application and its primary activity. -->
+    <!-- =================================================================== -->
+
+    <!-- The user-visible name of the application -->
+    <!-- Placeholder for the Flutter application class name -->
+    <!-- Path to the application's launcher icon -->
+    <!-- Enables new back gesture handling on Android 13+ -->
+    <!-- Specifies the target API level for build tools -->
+    <application
+        android:label="StrumSure"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="33">
+
+        <!-- The main activity of the Flutter application -->
+        <!-- Allows this activity to be launched by other apps/system -->
+        <!-- Ensures only one instance of the activity is in the task stack -->
+        <!-- Prevents this activity from being grouped with other apps' tasks -->
+        <!-- Theme applied during app launch (splash screen) -->
+        <!-- Enables hardware acceleration for better performance -->
+        <!-- Adjusts layout when soft keyboard appears -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:taskAffinity=""
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme"
+                />
+            <intent-filter>
+                <!-- Declares this as the main entry point -->
+                <action android:name="android.intent.action.MAIN" />
+                <!-- Declares this activity should appear in the launcher -->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- Specifies Flutter embedding version -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+
+    <!-- =================================================================== -->
+    <!-- PACKAGE VISIBILITY QUERIES (Android 11+ / API 30+) -->
+    <!-- This section is for declaring packages that your app intends to interact with. -->
+    <!-- It helps Android 11+ manage package visibility for privacy and security. -->
+    <!-- =================================================================== -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+        <!-- Add other <intent> or <package> tags here if your app explicitly interacts
+        with other specific apps (e.g., for sharing, opening files).
+        Plugins often add their own necessary queries automatically. -->
+    </queries>
+
+</manifest>
