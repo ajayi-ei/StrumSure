@@ -418,6 +418,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For any questions or feedback, please reach out to:
 
-- **Your Name/Alias**: Eberechukwu Ajayi
+- **Name**: Eberechukwu Ajayi
 - **Email**: ajayiisaiah777@gmail.com
 - **GitHub**: https://github.com/ajayi-ei
